@@ -40,6 +40,7 @@ function eatTail(head, arr){
     for (let i = 0; i < arr.length; i++){
         if(head.x == arr[i].x && head.y == arr[i].y){
             clearInterval(game)
+            chekResult.innerHTML = `Ты набрал ${resultApple} &#127823, пробуй еще разок и побей свой рекорд &#128521`
         }
     }
 }
