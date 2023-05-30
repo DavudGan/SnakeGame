@@ -1,11 +1,13 @@
 const canvas = document.getElementById('game')
+const chekResult = document.getElementById('chekResult')
 const ctx = canvas.getContext('2d')
 
 const foodImg = new Image()
 foodImg.src = 'img/apple.png'
 
 let box = 26
-
+let resultApple = 0
+chekResult.innerHTML = "Покажи на что способен &#128526"
 
 let food = {
     x: Math.floor(Math.random() * 26) * box,
@@ -46,13 +48,11 @@ function drawGame() {
     ctx.clearRect(0,0,676,676)
     canvas.style.background = 'linear-gradient(#bbb, transparent 2px), linear-gradient( 90deg, #bbb, transparent 2px)'
     canvas.style.backgroundSize= '26px 26px'
-    canvas.style.display = 'block'
-    canvas.style.margin = '0 auto'
 
     ctx.drawImage(foodImg, food.x, food.y)
 
     for(let i = 0; i < snake.length; i++){
-        ctx.fillStyle = i == 0 ? "green":"darkgreen"
+        ctx.fillStyle = i == 0 ? "green":"aquamarine"
         ctx.fillRect(snake[i].x, snake[i].y, box, box)
     }
 
@@ -60,6 +60,8 @@ function drawGame() {
         let snakeY = snake [0].y
 
         if(snakeX == food.x && snakeY == food.y){
+            resultApple++
+            chekResult.innerHTML ="Собрано: " + resultApple + "&#127823"
             food = {
                 x: Math.floor((Math.random() * 26)) * box,
                 y: Math.floor((Math.random() * 26)) * box
@@ -68,9 +70,10 @@ function drawGame() {
             snake.pop()
         }
         
-        if(snakeX < box || snakeX > (box * box)-52
-            || snakeY < box || snakeY > (box * box)-52){
+        if(snakeX + 26 < box || snakeX > (box * box) - 26
+            || snakeY + 26 < box || snakeY > (box * box - 26)){
             clearInterval(game)
+            chekResult.innerHTML = `Ты набрал ${resultApple} &#127823, пробуй еще разок и побей свой рекорд &#128521`
         }
 
         if(dir == 'left') snakeX  -= box
@@ -83,13 +86,12 @@ function drawGame() {
             y: snakeY
         }
 
-        console.log(newHead)
-
-        eatTail(newHead, snake);
+        eatTail(newHead, snake)
 
         snake.unshift(newHead)
+        console.log(snakeX,snakeY)
     }
 
 
 
-let game = setInterval(drawGame, 100)
+let game = setInterval(drawGame, 120)
